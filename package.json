@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/btrees5",
-  "version": "1.0.0",
+  "version": "1.0.0-ts.0",
   "main": "out/init.lua",
   "types": "out/index.d.ts",
   "scripts": {
@@ -12,6 +12,11 @@
   "author": "",
   "license": "ISC",
   "description": "Behavior Trees V5 with TS typings.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/draktovus/btrees5"
+  },
+  "homepage": "https://github.com/draktovus/btrees5/#readme.md",
   "files": [
     "out",
     "!**/*.tsbuildinfo"
