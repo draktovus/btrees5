@@ -1,4 +1,11 @@
-import { TREE_OUTCOME } from "./types";
+/**
+ * Constants and types used for statuses
+ */
+export const SUCCESS = 1;
+export const FAIL = 2;
+export const RUNNING = 3;
+
+export type TREE_OUTCOME = typeof SUCCESS | typeof FAIL | typeof RUNNING;
 
 /** Parameters that can be used when creating differant types of nodes. Not all parameters can be used by all types of nodes.
  * TODO: Create parameters specific to each type of node.
@@ -81,9 +88,23 @@ interface BehaviorTree5Constructor {
 	Tree: <T = unknown>(params: TreeNodeParams<T>) => Node<T>;
 	["Blackboard Query"]: <T extends unknown & { Blackboard: object } = unknown & { Blackboard: object }>(
 		params: BlackboardParams<T>,
-	) => BlackboardNode<T>;
+	) => Node<T>;
+}
+
+/** Static methods found on the exported BehaviorTree5Creator object*/
+interface BehaviorTreeCreatorConstructor {
+	readonly ClassName: "BehaviorTree5Creator";
+
+	/** Create a behavior tree from a folder from the behavior tree plugin and an object. */
+	Create<T = unknown>(treeFolder: Folder): BehaviorTree5<T> | undefined;
+
+	/** Create a shared blackboard with an index and blackboard object. */
+	RegisterSharedBlackboard(index: string, tab: object): void;
+
+	/** Used to set an identifier for a tree. */
+	SetTreeID(treeId: string, treeFolder: Folder): void;
 }
 
 // Actual Module exports
-declare const BehaviorTree5: BehaviorTree5Constructor;
-export = BehaviorTree5;
+export const BehaviorTree5: BehaviorTree5Constructor;
+export const BehaviorTreeCreator: BehaviorTreeCreatorConstructor;
