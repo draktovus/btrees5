@@ -11,7 +11,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "A fork of tech0tron's BTrees 5, with additional typing to allow usage of Blackboard Query.",
+  "description": "Behavior Trees V5 with TS typings.",
   "files": [
     "out",
     "!**/*.tsbuildinfo"
