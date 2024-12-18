@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/btrees5",
-  "version": "1.0.0-ts.0",
+  "version": "1.0.0-ts.1",
   "main": "out/init.lua",
   "types": "out/index.d.ts",
   "scripts": {
