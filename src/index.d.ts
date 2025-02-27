@@ -74,14 +74,107 @@ interface BehaviorTree5Constructor {
 	readonly ClassName: "BehaviorTree5";
 	new <T = unknown>(params: BehaviorTreeParams): BehaviorTree5<T>;
 
+	/**
+	 * The Sequence process the nodes it is given in sequence of the order
+	 * they are defined. If any of its subnodes fail, then it will not continue
+	 * to process the subnodes that follow it and return a fail state itself.
+	 *
+	 * ```ts
+	 * const Sequence = BehaviorTree5.Sequence({
+	 * 	nodes: [
+	 * 		node1,
+	 * 		node2, // if this failed, the next step would process node 1
+	 * 		node3,
+	 * 	]
+	 * })
+	 * ```
+	 */
 	Sequence: <T = unknown>(params: NodeParams<T>) => Node<T>;
+	/**
+	 * The Selector node will process every node until one of them succeeds, after which it will return success itself. If none of its subnodes succeed, then this Composite would return a fail state.
+	 * ```ts
+	 * const SelectorNode = BehaviorTree5.Selector({
+	 * 	nodes: [
+	 * 		node1,
+	 * 		node2,
+	 * 		node3, // this is the only node that suceeded, so SelectorNode would return success
+	 * 	],
+	 * })
+	 * ```
+	 */
 	Selector: <T = unknown>(params: NodeParams<T>) => Node<T>;
+	/**
+	 * This Selector will randomly select a subnode to process, and will return whatever state that node returns.
+	 *
+	 * ```ts
+	 * const Random = BehaviorTree5.Random({
+	 * 	nodes: [ node1, node2, node3 ]
+	 * })
+	 * ```
+	 *
+	 * Nodes can also have an optional weight attribute that will affect Random. Default is 1.
+	 *
+	 * ```ts
+	 * const node1 = BehaviorTree5.Task({
+	 *  weight: 10,
+	 * 	run: (object, ...args) => {
+	 * 		print("Weight: 10");
+	 * 		return SUCCESS;
+	 * 	}
+	 * })
+	 *
+	 * const node2 = BehaviorTree5.Task({
+	 *  weight: 10,
+	 * 	run: (object, ...args) => {
+	 * 		print("Also weight: 10");
+	 * 		return SUCCESS;
+	 * 	}
+	 * })
+	 *
+	 * const node3 = BehaviorTree5.Task({
+	 *  weight: 200,
+	 * 	run: (object, ...args) => {
+	 * 		print("You probably won't see 'Weight: 10' printed.");
+	 * 		return SUCCESS;
+	 * 	}
+	 * })
+	 * ```
+	 */
 	Random: <T = unknown>(params: NodeParams<T>) => Node<T>;
+	/**
+	 * The While Only accepts two children, a condition(1st child),
+	 * and an action(2nd child) It repeats until either the condition returns fail,
+	 * wherein the node itself returns fail, or the action returns success,
+	 * wherein the node itself returns success.
+	 *
+	 * ```ts
+	 * const While = BehaviorTree5.While({
+	 * 	nodes: [
+	 * 		condition, // If this node returns fail, return fail
+	 * 		action, // When this node returns success, return success
+	 * 	]
+	 * })
+	 * ```
+	 */
 	While: <T = unknown>(params: NodeParams<T>) => Node<T>;
 
 	Succeed: <T = unknown>(params: NodeParams<T>) => Node<T>;
 	Fail: <T = unknown>(params: NodeParams<T>) => Node<T>;
 	Invert: <T = unknown>(params: NodeParams<T>) => Node<T>;
+	/**
+	 * Repeat decorators will repeat their children node tasks until count,
+	 * or indefinitely if count is nil or < 0, after which they will return a
+	 * success state. If breakonfail is true and its child node fails, it will
+	 * stop repeating and return a fail state.
+	 *
+	 * ```ts
+	 * const Repeat = BehaviorTree5.Repeat({
+	 * 	nodes: [node1],
+	 * 	count: 3,
+	 * 	breakonfail: true
+	 * })
+	 * ```
+	 */
 	Repeat: <T = unknown>(params: NodeParams<T>) => Node<T>;
 
 	Task: <T = unknown>(params: TaskNodeParams<T>) => Node<T>;
